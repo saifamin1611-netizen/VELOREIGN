@@ -1,0 +1,1624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VELOREIGN — Premium Clothing & Streetwear</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            black: '#000000',
+                            white: '#FFFFFF',
+                            gray: '#B8B8B8',
+                            darkgray: '#121212',
+                            border: '#333333'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'Manrope', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            background-color: #000000;
+            color: #FFFFFF;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        .glass-header {
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid #333333;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #000000;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333333;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555555;
+        }
+        .fade-in {
+            animation: fadeIn 0.3s ease-in-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-brand-black text-brand-white min-h-screen flex flex-col selection:bg-brand-white selection:text-brand-black">
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-3 pointer-events-none"></div>
+
+    <!-- HEADER -->
+    <header id="site-header" class="fixed top-0 left-0 right-0 z-40 transition-all duration-300 glass-header">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Left: Hamburger Menu & Social Links -->
+            <div class="flex items-center gap-2 sm:gap-4">
+                <button onclick="toggleMobileMenu()" class="p-2 text-brand-white hover:text-brand-gray transition-colors focus:outline-none" aria-label="Open Menu">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+                <div class="hidden md:flex items-center gap-3 border-l border-brand-border pl-4">
+                    <a href="https://www.facebook.com/profile.php?id=61575914436963" target="_blank" rel="noopener noreferrer" class="p-1 text-brand-gray hover:text-brand-white transition-colors" aria-label="Facebook">
+                        <i data-lucide="facebook" class="w-4 h-4"></i>
+                    </a>
+                    <a href="https://www.instagram.com/veloreign_fashion_._/?hl=en" target="_blank" rel="noopener noreferrer" class="p-1 text-brand-gray hover:text-brand-white transition-colors" aria-label="Instagram">
+                        <i data-lucide="instagram" class="w-4 h-4"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Center: Logo -->
+            <div class="absolute left-1/2 transform -translate-x-1/2 cursor-pointer" onclick="router('home')">
+                <img
+  src="https://i.postimg.cc/T2scvbPF/veloreign-new-logo-1-png-(1).png"
+  alt="VELOREIGN"
+  class="h-5 w-auto object-contain"
+/>
+            </div>
+
+            <!-- Right: Icons (Search, Wishlist, Cart) -->
+            <div class="flex items-center gap-4 sm:gap-6">
+                <button onclick="toggleSearchModal()" class="text-brand-white hover:text-brand-gray transition-colors relative" aria-label="Search">
+                    <i data-lucide="search" class="w-5 h-5"></i>
+                </button>
+                <button onclick="router('wishlist')" class="text-brand-white hover:text-brand-gray transition-colors relative" aria-label="Wishlist">
+                    <i data-lucide="heart" class="w-5 h-5"></i>
+                    <span id="wishlist-badge" class="absolute -top-2 -right-2 bg-brand-white text-brand-black text-xs font-bold rounded-full w-4 h-4 flex items-center justify-center hidden">0</span>
+                </button>
+                <button onclick="toggleCartDrawer()" class="text-brand-white hover:text-brand-gray transition-colors relative" aria-label="Shopping Bag">
+                    <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+                    <span id="cart-badge" class="absolute -top-2 -right-2 bg-brand-white text-brand-black text-xs font-bold rounded-full w-4 h-4 flex items-center justify-center hidden">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MOBILE MENU OVERLAY -->
+    <div id="mobile-menu" class="fixed inset-0 z-50 bg-brand-black/95 backdrop-blur-xl transform -translate-x-full transition-transform duration-300 flex flex-col">
+        <div class="flex items-center justify-between px-6 h-20 border-b border-brand-border">
+            <span class="text-lg font-bold tracking-[0.2em]">VELOREIGN</span>
+            <button onclick="toggleMobileMenu()" class="p-2 text-brand-white hover:text-brand-gray">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+        </div>
+        <div class="flex-1 overflow-y-auto px-6 py-8 flex flex-col gap-6 text-lg font-medium">
+            <a href="#" onclick="router('home'); toggleMobileMenu(); return false;" class="hover:text-brand-gray transition-colors">Home</a>
+            <a href="#" onclick="router('explore'); toggleMobileMenu(); return false;" class="hover:text-brand-gray transition-colors">Explore Style</a>
+            <a href="#" onclick="router('combos'); toggleMobileMenu(); return false;" class="hover:text-brand-gray transition-colors">Combo Offers</a>
+            <a href="#" onclick="router('explore'); toggleMobileMenu(); return false;" class="hover:text-brand-gray transition-colors">Latest Collection</a>
+            <a href="#" onclick="router('wishlist'); toggleMobileMenu(); return false;" class="hover:text-brand-gray transition-colors flex items-center justify-between">
+                Wishlist <span id="mobile-wishlist-count" class="bg-brand-border text-xs px-2 py-0.5 rounded-full">0</span>
+            </a>
+            <a href="#" onclick="toggleCartDrawer(); toggleMobileMenu(); return false;" class="hover:text-brand-gray transition-colors flex items-center justify-between">
+                Shopping Bag <span id="mobile-cart-count" class="bg-brand-border text-xs px-2 py-0.5 rounded-full">0</span>
+            </a>
+            <hr class="border-brand-border my-2">
+            <a href="#" onclick="router('contact'); toggleMobileMenu(); return false;" class="text-brand-gray text-base hover:text-brand-white transition-colors">Contact Us</a>
+            <a href="#" onclick="router('faq'); toggleMobileMenu(); return false;" class="text-brand-gray text-base hover:text-brand-white transition-colors">FAQ</a>
+            <a href="#" onclick="router('policy-return'); toggleMobileMenu(); return false;" class="text-brand-gray text-base hover:text-brand-white transition-colors">Return Policy</a>
+            <a href="#" onclick="router('policy-privacy'); toggleMobileMenu(); return false;" class="text-brand-gray text-base hover:text-brand-white transition-colors">Privacy Policy</a>
+            <a href="#" onclick="router('policy-terms'); toggleMobileMenu(); return false;" class="text-brand-gray text-base hover:text-brand-white transition-colors">Terms and Conditions</a>
+            
+            <div class="pt-4 flex items-center gap-6">
+                <a href="https://www.facebook.com/profile.php?id=61575914436963" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 text-sm text-brand-gray hover:text-brand-white">
+                    <i data-lucide="facebook" class="w-5 h-5"></i> Facebook
+                </a>
+                <a href="https://www.instagram.com/veloreign_fashion_._/?hl=en" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 text-sm text-brand-gray hover:text-brand-white">
+                    <i data-lucide="instagram" class="w-5 h-5"></i> Instagram
+                </a>
+            </div>
+        </div>
+        <div class="p-6 border-t border-brand-border text-xs text-brand-gray text-center">
+            WhatsApp: 01611028150 | Stay Stylish. Stay VELOREIGN.
+        </div>
+    </div>
+
+    <!-- SEARCH MODAL -->
+    <div id="search-modal" class="fixed inset-0 z-50 bg-brand-black/90 backdrop-blur-md hidden flex flex-col pt-24 px-4 sm:px-6">
+        <div class="max-w-2xl mx-auto w-full">
+            <div class="flex items-center justify-between pb-4 border-b border-brand-border">
+                <div class="flex items-center gap-3 flex-1">
+                    <i data-lucide="search" class="w-6 h-6 text-brand-gray"></i>
+                    <input type="text" id="search-input" oninput="handleSearch(this.value)" placeholder="Search drop shoulder, plaid shirts, old money..." class="bg-transparent text-xl sm:text-2xl text-brand-white placeholder-brand-gray outline-none w-full">
+                </div>
+                <button onclick="toggleSearchModal()" class="p-2 text-brand-gray hover:text-brand-white">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+            <div id="search-results" class="mt-6 max-h-[60vh] overflow-y-auto flex flex-col gap-4">
+                <!-- Search results populate here safely -->
+            </div>
+        </div>
+    </div>
+
+    <!-- CART SIDE DRAWER -->
+    <div id="cart-drawer" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex justify-end">
+        <div class="w-full max-w-md bg-brand-black border-l border-brand-border h-full flex flex-col shadow-2xl transform transition-transform duration-300">
+            <div class="p-6 border-b border-brand-border flex items-center justify-between">
+                <h2 class="text-lg font-bold tracking-wider uppercase">Shopping Bag (<span id="cart-count-header">0</span>)</h2>
+                <button onclick="toggleCartDrawer()" class="p-2 text-brand-gray hover:text-brand-white">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+            <div id="cart-items-container" class="flex-1 overflow-y-auto p-6 flex flex-col gap-4">
+                <!-- Cart items populate here -->
+            </div>
+            <div class="p-6 border-t border-brand-border bg-brand-darkgray flex flex-col gap-4">
+                <div class="flex justify-between items-center text-brand-gray text-sm">
+                    <span>Subtotal</span>
+                    <span id="cart-subtotal" class="text-brand-white font-semibold">৳0</span>
+                </div>
+                <div class="flex justify-between items-center text-brand-gray text-sm">
+                    <span>Delivery Charge</span>
+                    <span id="cart-delivery" class="text-brand-white">৳0</span>
+                </div>
+                <div class="flex justify-between items-center text-base font-bold pt-2 border-t border-brand-border">
+                    <span>Total</span>
+                    <span id="cart-total" class="text-brand-white">৳0</span>
+                </div>
+                <button onclick="proceedToCheckoutFromCart()" id="checkout-btn" class="w-full bg-brand-white text-brand-black py-3.5 font-semibold uppercase tracking-wider hover:bg-brand-gray transition-colors text-center">
+                    Proceed to Checkout
+                </button>
+                <button onclick="toggleCartDrawer()" class="w-full bg-transparent border border-brand-border text-brand-white py-3 font-medium text-sm hover:border-brand-white transition-colors">
+                    Continue Shopping
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FULLSCREEN LIGHTBOX -->
+    <div id="lightbox" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-lg hidden items-center justify-center p-4">
+        <button onclick="closeLightbox()" class="absolute top-6 right-6 text-brand-white p-3 hover:text-brand-gray bg-brand-border/50 rounded-full">
+            <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+        <img id="lightbox-img" src="" alt="Product Lightbox" class="max-w-full max-h-[85vh] object-contain rounded-lg">
+    </div>
+
+    <!-- MAIN APP CONTAINER -->
+    <main id="app" class="flex-1 pt-20">
+        <!-- Dynamic views rendered here -->
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-brand-black border-t border-brand-border py-16 mt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-10">
+            <div class="flex flex-col gap-4">
+                <img
+  src="https://i.postimg.cc/T2scvbPF/veloreign-new-logo-1-png-(1).png"
+  alt="VELOREIGN"
+  class="h-8 w-auto object-contain"
+/>
+                <p class="text-brand-gray text-sm leading-relaxed">Stay Stylish. Stay VELOREIGN. Premium clothing and streetwear designed for those who command presence.</p>
+                <p class="text-brand-white text-sm font-medium">WhatsApp: 01611028150</p>
+                <!-- Social Media Buttons -->
+                <div class="flex items-center gap-4 mt-2">
+                    <a href="https://www.facebook.com/profile.php?id=61575914436963" target="_blank" rel="noopener noreferrer" class="p-2 border border-brand-border rounded-full text-brand-white hover:bg-brand-white hover:text-brand-black transition-colors" aria-label="Facebook">
+                        <i data-lucide="facebook" class="w-4 h-4"></i>
+                    </a>
+                    <a href="https://www.instagram.com/veloreign_fashion_._/?hl=en" target="_blank" rel="noopener noreferrer" class="p-2 border border-brand-border rounded-full text-brand-white hover:bg-brand-white hover:text-brand-black transition-colors" aria-label="Instagram">
+                        <i data-lucide="instagram" class="w-4 h-4"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="flex flex-col gap-3">
+                <h4 class="text-sm font-semibold uppercase tracking-wider text-brand-white mb-2">Quick Links</h4>
+                <a href="#" onclick="router('home'); return false;" class="text-brand-gray text-sm hover:text-brand-white transition-colors">Home</a>
+                <a href="#" onclick="router('explore'); return false;" class="text-brand-gray text-sm hover:text-brand-white transition-colors">Explore Style</a>
+                <a href="#" onclick="router('combos'); return false;" class="text-brand-gray text-sm hover:text-brand-white transition-colors">Combo Offers</a>
+                <a href="#" onclick="router('wishlist'); return false;" class="text-brand-gray text-sm hover:text-brand-white transition-colors">Wishlist</a>
+            </div>
+            <div class="flex flex-col gap-3">
+                <h4 class="text-sm font-semibold uppercase tracking-wider text-brand-white mb-2">Customer Care</h4>
+                <a href="#" onclick="router('contact'); return false;" class="text-brand-gray text-sm hover:text-brand-white transition-colors">Contact Us</a>
+                <a href="#" onclick="router('faq'); return false;" class="text-brand-gray text-sm hover:text-brand-white transition-colors">FAQ</a>
+                <a href="#" onclick="router('policy-return'); return false;" class="text-brand-gray text-sm hover:text-brand-white transition-colors">Return & Exchange Policy</a>
+            </div>
+            <div class="flex flex-col gap-3">
+                <h4 class="text-sm font-semibold uppercase tracking-wider text-brand-white mb-2">Legal</h4>
+                <a href="#" onclick="router('policy-privacy'); return false;" class="text-brand-gray text-sm hover:text-brand-white transition-colors">Privacy Policy</a>
+                <a href="#" onclick="router('policy-terms'); return false;" class="text-brand-gray text-sm hover:text-brand-white transition-colors">Terms and Conditions</a>
+                <p class="text-brand-gray text-xs mt-4">© 2026 VELOREIGN. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT APPLICATION CODE -->
+    <script>
+        // --- DATA STORE ---
+        const products = [
+            {
+                id: 'ds-1',
+                name: 'Veloreign Drop Shoulder',
+                category: 'Drop Shoulder T-Shirts',
+                price: 650,
+                gsm: '240 GSM',
+                fabric: '100% Combed Compact Cotton',
+                features: ['Heavyweight breathable fabric', 'Boxy streetwear fit', 'Reinforced neck ribbing', 'Soft-touch pre-shrunk cotton'],
+                description: 'Designed for effortless streetwear styling, the Velo Noir Drop Shoulder Tee features an immaculate boxy silhouette with heavy-duty combed cotton.',
+                images: [
+                    'https://i.postimg.cc/ZqmfqYR9/veloreign-tee.png',
+                    'https://i.postimg.cc/2jd9PZ89/Gemini-Generated-Image-f2ztxtf2ztxtf2zt.jpg'
+                ],
+                sizes: ['M', 'L', 'XL']
+            },
+            {
+                id: 'ds-2',
+                name: 'Brazil FC Drop Shoulder',
+                category: 'Drop Shoulder T-Shirts',
+                price: 850,
+                gsm: '240 GSM',
+                fabric: '100% Combed Compact Cotton',
+                features: ['Heavyweight breathable fabric', 'Boxy streetwear fit', 'Reinforced neck ribbing', 'Soft-touch pre-shrunk cotton'],
+                description: 'A clean ash grey essential engineered with superior stitch density and luxurious drape.',
+                images: [
+                    'https://i.postimg.cc/qBGCfJfn/brazil-drop-design.png'
+                ],
+                sizes: ['M', 'L', 'XL']
+            },
+             {
+                id: 'ds-3',
+                name: 'BMW Drop Shoulder',
+                category: 'Drop Shoulder T-Shirts',
+                price: 850,
+                gsm: '240 GSM',
+                fabric: '100% Combed Compact Cotton',
+                features: ['Heavyweight breathable fabric', 'Boxy streetwear fit', 'Reinforced neck ribbing', 'Soft-touch pre-shrunk cotton'],
+                description: 'A clean ash grey essential engineered with superior stitch density and luxurious drape.',
+                images: [
+                    'https://i.postimg.cc/VLds7mzg/801808332-122189182916863814-6302684907258316681-n.jpg'
+                ],
+                sizes: ['M', 'L', 'XL']
+            },
+            {
+                id: 'ds-4',
+                name: 'FERRARI Drop Shoulder',
+                category: 'Drop Shoulder T-Shirts',
+                price: 850,
+                gsm: '240 GSM',
+                fabric: '100% Combed Compact Cotton',
+                features: ['Heavyweight breathable fabric', 'Boxy streetwear fit', 'Reinforced neck ribbing', 'Soft-touch pre-shrunk cotton'],
+                description: 'A clean ash grey essential engineered with superior stitch density and luxurious drape.',
+                images: [
+                    'https://i.postimg.cc/435TfSXS/ferrari-drop-mockup.png'
+                ],
+                sizes: ['M', 'L', 'XL']
+            },
+            {
+                id: 'ds-5',
+                name: 'SKYLINE GTR Drop Shoulder',
+                category: 'Drop Shoulder T-Shirts',
+                price: 850,
+                gsm: '240 GSM',
+                fabric: '100% Combed Compact Cotton',
+                features: ['Heavyweight breathable fabric', 'Boxy streetwear fit', 'Reinforced neck ribbing', 'Soft-touch pre-shrunk cotton'],
+                description: 'A clean ash grey essential engineered with superior stitch density and luxurious drape.',
+                images: [
+                    'https://i.postimg.cc/R0s41D2q/skyline-gtr-t-shirt-mockup.png',
+                    'https://i.postimg.cc/T2nBfsCv/Chat-GPT-Image-Apr-22-2026-02-57-16-PM.png',
+                    'https://i.postimg.cc/6qKj89zR/Chat-GPT-Image-Apr-22-2026-02-57-12-PM.png'
+                ],
+                sizes: ['M', 'L', 'XL']
+            },
+             {
+                id: 'ds-6',
+                name: 'SUPRA MK4 Drop Shoulder',
+                category: 'Drop Shoulder T-Shirts',
+                price: 850,
+                gsm: '240 GSM',
+                fabric: '100% Combed Compact Cotton',
+                features: ['Heavyweight breathable fabric', 'Boxy streetwear fit', 'Reinforced neck ribbing', 'Soft-touch pre-shrunk cotton'],
+                description: 'A clean ash grey essential engineered with superior stitch density and luxurious drape.',
+                images: [
+                    'https://i.postimg.cc/Njs3Nx6N/mk4-mockup.png'
+                ],
+                sizes: ['M', 'L', 'XL']
+            },
+        ];
+
+        const combos = [
+            {
+                id: 'combo-1',
+                name: 'Dual Drop Shoulder Pack',
+                price: 2300,
+                description: 'Pick any 2 premium Drop Shoulder T-Shirts for your rotation.',
+                items: ['Drop Shoulder T-Shirts', 'Drop Shoulder T-Shirts'],
+                image: '',
+                productId1: 'ds-1',
+                productId2: 'ds-2'
+            },
+        ];
+
+        combos.forEach(combo => {
+            const p1 = products.find(p => p.id === combo.productId1);
+            const p2 = products.find(p => p.id === combo.productId2);
+            if (p1 && p2) {
+                combo.originalPrice = p1.price + p2.price;
+                combo.savings = combo.originalPrice - combo.price;
+            } else {
+                combo.originalPrice = combo.price + 300;
+                combo.savings = 300;
+            }
+        });
+
+        const sizeCharts = {
+            'Drop Shoulder T-Shirts': {
+                headers: ['Measurement', 'M', 'L', 'XL'],
+                rows: [
+                    ['Chest', '42"', '44"', '46"'],
+                    ['Length', '28"', '29"', '30"'],
+                    ['Sleeve', '10"', '10.5"', '11"']
+                ]
+            },
+            'Plaid Shirts': {
+                headers: ['Measurement', 'M', 'L', 'XL'],
+                rows: [
+                    ['Chest', '42"', '44"', '46"'],
+                    ['Length', '28"', '29"', '30"'],
+                    ['Sleeve', '24.5"', '25.5"', '26.5"']
+                ]
+            },
+            'Old Money Shirts': {
+                headers: ['Measurement', 'M', 'L', 'XL'],
+                rows: [
+                    ['Chest', '42"', '44"', '46"'],
+                    ['Length', '28"', '29"', '30"'],
+                    ['Sleeve', '24.5"', '25.5"', '26.5"']
+                ]
+            }
+        };
+
+        // --- APP STATE ---
+        let cart = [];
+        try {
+            const savedCart = localStorage.getItem('veloreign_cart');
+            cart = savedCart ? JSON.parse(savedCart) : [];
+            if (!Array.isArray(cart)) cart = [];
+        } catch (e) {
+            cart = [];
+            localStorage.removeItem('veloreign_cart');
+        }
+
+        let wishlist = [];
+        try {
+            const savedWishlist = localStorage.getItem('veloreign_wishlist');
+            wishlist = savedWishlist ? JSON.parse(savedWishlist) : [];
+            if (!Array.isArray(wishlist)) wishlist = [];
+        } catch (e) {
+            wishlist = [];
+            localStorage.removeItem('veloreign_wishlist');
+        }
+
+        let currentRoute = 'home';
+        let routeParam = null;
+        let selectedDetailSize = 'M';
+        let detailQuantity = 1;
+        let selectedComboSize1 = 'M';
+        let selectedComboSize2 = 'M';
+        let isSubmittingOrder = false;
+
+        // --- INITIALIZATION ---
+        window.addEventListener('DOMContentLoaded', () => {
+            updateBadges();
+            router('home');
+            lucide.createIcons();
+        });
+
+        function saveState() {
+            try {
+                localStorage.setItem('veloreign_cart', JSON.stringify(cart));
+                localStorage.setItem('veloreign_wishlist', JSON.stringify(wishlist));
+            } catch (e) {
+                console.error('LocalStorage persistence error:', e);
+            }
+            updateBadges();
+        }
+
+        function updateBadges() {
+            const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const wishlistCount = wishlist.length;
+
+            const cartBadge = document.getElementById('cart-badge');
+            const mobileCartCount = document.getElementById('mobile-cart-count');
+            const cartHeader = document.getElementById('cart-count-header');
+
+            if (cartCount > 0) {
+                cartBadge.innerText = cartCount;
+                cartBadge.classList.remove('hidden');
+                mobileCartCount.innerText = cartCount;
+            } else {
+                cartBadge.classList.add('hidden');
+                mobileCartCount.innerText = '0';
+            }
+            if (cartHeader) cartHeader.innerText = cartCount;
+
+            const wishlistBadge = document.getElementById('wishlist-badge');
+            const mobileWishlistCount = document.getElementById('mobile-wishlist-count');
+            if (wishlistCount > 0) {
+                wishlistBadge.innerText = wishlistCount;
+                wishlistBadge.classList.remove('hidden');
+                mobileWishlistCount.innerText = wishlistCount;
+            } else {
+                wishlistBadge.classList.add('hidden');
+                mobileWishlistCount.innerText = '0';
+            }
+        }
+
+        // --- ROUTER SYSTEM ---
+        function router(route, param = null) {
+            currentRoute = route;
+            routeParam = param;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            const app = document.getElementById('app');
+            app.innerHTML = '';
+
+            switch (route) {
+                case 'home':
+                    renderHome(app);
+                    break;
+                case 'explore':
+                    renderExplore(app, param);
+                    break;
+                case 'combos':
+                    renderCombos(app);
+                    break;
+                case 'product':
+                    renderProductDetail(app, param);
+                    break;
+                case 'combo-detail':
+                    renderComboDetail(app, param);
+                    break;
+                case 'wishlist':
+                    renderWishlist(app);
+                    break;
+                case 'checkout':
+                    if (cart.length === 0) {
+                        showToast('Your bag is empty!');
+                        renderExplore(app);
+                    } else {
+                        renderCheckout(app);
+                    }
+                    break;
+                case 'contact':
+                    renderContact(app);
+                    break;
+                case 'faq':
+                    renderFaq(app);
+                    break;
+                case 'policy-return':
+                    renderPolicy(app, 'Return & Exchange Policy', 'We accept returns and exchanges within 7 days of delivery for unworn, unwashed items with original tags intact. Contact our WhatsApp support at 01611028150 to initiate an exchange.');
+                    break;
+                case 'policy-privacy':
+                    renderPolicy(app, 'Privacy Policy', 'Your personal information including your name, phone number, and delivery address is strictly kept confidential and used exclusively for order fulfillment and delivery coordination.');
+                    break;
+                case 'policy-terms':
+                    renderPolicy(app, 'Terms and Conditions', 'All orders placed are confirmed via WhatsApp with valid transaction IDs. VELOREIGN reserves the right to modify pricing, product availability, and combo offers at any time.');
+                    break;
+                default:
+                    renderHome(app);
+            }
+            lucide.createIcons();
+        }
+
+        // --- TOAST NOTIFICATIONS ---
+        function showToast(message) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'bg-brand-white text-brand-black px-6 py-3.5 text-sm font-semibold shadow-2xl flex items-center gap-3 fade-in pointer-events-auto border border-brand-border';
+            toast.innerHTML = `<i data-lucide="check-circle" class="w-4 h-4"></i> ${message}`;
+            container.appendChild(toast);
+            lucide.createIcons();
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // --- VIEWS ---
+
+        // 1. HOME VIEW
+        function renderHome(container) {
+            container.innerHTML = `
+                <!-- Hero Section -->
+                <section class="relative min-h-[85vh] flex flex-col items-center justify-center text-center px-4 sm:px-6 py-20 border-b border-brand-border bg-gradient-to-b from-brand-black via-brand-darkgray to-brand-black">
+                    <div class="max-w-4xl mx-auto flex flex-col items-center gap-6 fade-in">
+                        <span class="text-xs uppercase tracking-[0.3em] text-brand-gray border border-brand-border px-4 py-1.5 rounded-full">Premium Streetwear & Luxury Basics</span>
+                        <img
+  src="https://i.postimg.cc/T2scvbPF/veloreign-new-logo-1-png-(1).png"
+  alt="VELOREIGN"
+  class="h-20 w-auto object-contain"
+/>
+                        <p class="text-lg sm:text-2xl text-brand-gray font-light tracking-wide italic"><b>Stay Stylish. Stay VELOREIGN.</b></p>
+                        
+                        <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto mt-6">
+                            <button onclick="router('explore')" class="bg-brand-white text-brand-black px-8 py-4 font-semibold uppercase tracking-wider hover:bg-brand-gray transition-colors text-sm">
+                                Explore Style
+                            </button>
+                            <button onclick="router('combos')" class="bg-transparent border border-brand-white text-brand-white px-8 py-4 font-semibold uppercase tracking-wider hover:bg-brand-white hover:text-brand-black transition-colors text-sm">
+                                Get Your Combo
+                            </button>
+                        </div>
+                        <p class="text-brand-gray text-xs tracking-widest uppercase mt-4">Discover Your Style.</p>
+                    </div>
+                </section>
+
+                <!-- Latest Collection Section -->
+                <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+                    <div class="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-12">
+                        <div>
+                            <span class="text-xs uppercase tracking-[0.2em] text-brand-gray">New Drops</span>
+                            <h2 class="text-2xl sm:text-4xl font-bold tracking-wider uppercase mt-2">Latest Collection</h2>
+                        </div>
+                        <button onclick="router('explore')" class="text-brand-gray hover:text-brand-white text-sm tracking-widest uppercase flex items-center gap-2 mt-4 sm:mt-0 transition-colors">
+                            View All Collection <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                        ${products.slice(0, 3).map(p => renderProductCard(p)).join('')}
+                    </div>
+                </section>
+
+                <!-- Brand Promise Banner -->
+                <section class="border-y border-brand-border bg-brand-darkgray py-20 px-4 sm:px-6 lg:px-8">
+                    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
+                        <div class="flex flex-col items-center gap-4">
+                            <div class="p-4 border border-brand-border rounded-full text-brand-white"><i data-lucide="shield-check" class="w-6 h-6"></i></div>
+                            <h3 class="font-bold tracking-wider uppercase text-sm">Uncompromising Quality</h3>
+                            <p class="text-brand-gray text-sm">Crafted with heavy GSM combed cotton, premium flannel, and expert tailoring.</p>
+                        </div>
+                        <div class="flex flex-col items-center gap-4">
+                            <div class="p-4 border border-brand-border rounded-full text-brand-white"><i data-lucide="message-circle" class="w-6 h-6"></i></div>
+                            <h3 class="font-bold tracking-wider uppercase text-sm">Direct WhatsApp Ordering</h3>
+                            <p class="text-brand-gray text-sm">Fast, personal order processing directly via WhatsApp (01611028150).</p>
+                        </div>
+                        <div class="flex flex-col items-center gap-4">
+                            <div class="p-4 border border-brand-border rounded-full text-brand-white"><i data-lucide="sparkles" class="w-6 h-6"></i></div>
+                            <h3 class="font-bold tracking-wider uppercase text-sm">Streetwear & Old Money</h3>
+                            <p class="text-brand-gray text-sm">Curated collections designed for modern streetwear enthusiasts and luxury minimalists.</p>
+                        </div>
+                    </div>
+                </section>
+            `;
+        }
+
+        // 2. EXPLORE STYLE VIEW
+        function renderExplore(container, activeCat = null) {
+            const categories = ['All Collections', 'Drop Shoulder T-Shirts', 'Plaid Shirts', 'Old Money Shirts'];
+            const selectedCat = activeCat || 'All Collections';
+
+            const filteredProducts = selectedCat === 'All Collections' 
+                ? products 
+                : products.filter(p => p.category === selectedCat);
+
+            container.innerHTML = `
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                    <!-- Breadcrumb -->
+                    <div class="flex items-center gap-2 text-xs text-brand-gray uppercase tracking-widest mb-8">
+                        <span class="cursor-pointer hover:text-brand-white" onclick="router('home')">Home</span>
+                        <span>/</span>
+                        <span class="text-brand-white">Explore Style</span>
+                        ${selectedCat !== 'All Collections' ? `<span>/</span><span class="text-brand-white">${selectedCat}</span>` : ''}
+                    </div>
+
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
+                        <div>
+                            <h2 class="text-3xl sm:text-5xl font-bold tracking-wider uppercase">Explore Style</h2>
+                            <p class="text-brand-gray text-sm mt-2">Discover premium clothing engineered for distinction.</p>
+                        </div>
+                        
+                        <!-- Filter Tabs -->
+                        <div class="flex flex-wrap gap-2">
+                            ${categories.map(cat => `
+                                <button onclick="renderExplore(document.getElementById('app'), '${cat}')" class="px-4 py-2 text-xs uppercase tracking-wider border transition-all ${selectedCat === cat ? 'bg-brand-white text-brand-black border-brand-white font-bold' : 'bg-transparent text-brand-gray border-brand-border hover:border-brand-white'}">
+                                    ${cat}
+                                </button>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <!-- Products Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                        ${filteredProducts.length > 0 ? filteredProducts.map(p => renderProductCard(p)).join('') : `
+                            <div class="col-span-full py-20 text-center text-brand-gray">
+                                <p class="text-lg">No products found in this category.</p>
+                                <button onclick="renderExplore(document.getElementById('app'), 'All Collections')" class="mt-4 bg-brand-white text-brand-black px-6 py-3 text-xs uppercase font-semibold">View All Collections</button>
+                            </div>
+                        `}
+                    </div>
+                </div>
+            `;
+        }
+
+        // 3. COMBO OFFERS VIEW
+        function renderCombos(container) {
+            container.innerHTML = `
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                    <div class="flex items-center gap-2 text-xs text-brand-gray uppercase tracking-widest mb-8">
+                        <span class="cursor-pointer hover:text-brand-white" onclick="router('home')">Home</span>
+                        <span>/</span>
+                        <span class="text-brand-white">Combo Offers</span>
+                    </div>
+
+                    <div class="mb-12">
+                        <h2 class="text-3xl sm:text-5xl font-bold tracking-wider uppercase">Combo Offers</h2>
+                        <p class="text-brand-gray text-sm mt-2">Bundle your favorite pieces and save more with curated clothing combinations.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        ${combos.map(combo => `
+                            <div class="border border-brand-border bg-brand-darkgray flex flex-col justify-between group">
+                                <div class="relative overflow-hidden cursor-pointer" onclick="router('combo-detail', '${combo.id}')">
+                                    <img src="${combo.image}" alt="${combo.name}" class="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-500">
+                                    <span class="absolute top-4 left-4 bg-brand-white text-brand-black text-xs font-bold uppercase px-3 py-1 tracking-wider">Save ৳${combo.savings}</span>
+                                </div>
+                                <div class="p-6 flex flex-col gap-4 flex-1 justify-between">
+                                    <div>
+                                        <h3 class="text-xl font-bold tracking-wide uppercase cursor-pointer hover:text-brand-gray transition-colors" onclick="router('combo-detail', '${combo.id}')">${combo.name}</h3>
+                                        <p class="text-brand-gray text-sm mt-2">${combo.description}</p>
+                                    </div>
+                                    <div class="flex items-baseline gap-4 pt-4 border-t border-brand-border">
+                                        <span class="text-xl font-bold text-brand-white">৳${combo.price}</span>
+                                        <span class="text-sm text-brand-gray line-through">৳${combo.originalPrice}</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-3 mt-2">
+                                        <button onclick="router('combo-detail', '${combo.id}')" class="bg-transparent border border-brand-white text-brand-white py-3 text-xs font-semibold uppercase tracking-wider hover:bg-brand-white hover:text-brand-black transition-colors text-center">
+                                            View Combo
+                                        </button>
+                                        <button onclick="router('combo-detail', '${combo.id}')" class="bg-brand-white text-brand-black py-3 text-xs font-semibold uppercase tracking-wider hover:bg-brand-gray transition-colors text-center">
+                                            Select Sizes
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        // 4. PRODUCT DETAILS VIEW
+        function renderProductDetail(container, productId) {
+            const product = products.find(p => p.id === productId) || products[0];
+            
+            selectedDetailSize = product.sizes[0];
+            detailQuantity = 1;
+
+            const sizeChart = sizeCharts[product.category] || sizeCharts['Drop Shoulder T-Shirts'];
+            const related = products.filter(p => p.id !== product.id).slice(0, 3);
+
+            container.innerHTML = `
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                    <!-- Breadcrumb -->
+                    <div class="flex items-center gap-2 text-xs text-brand-gray uppercase tracking-widest mb-8">
+                        <span class="cursor-pointer hover:text-brand-white" onclick="router('home')">Home</span>
+                        <span>/</span>
+                        <span class="cursor-pointer hover:text-brand-white" onclick="router('explore')">Explore Style</span>
+                        <span>/</span>
+                        <span class="cursor-pointer hover:text-brand-white" onclick="router('explore', '${product.category}')">${product.category}</span>
+                        <span>/</span>
+                        <span class="text-brand-white">${product.name}</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+                        <!-- Product Gallery -->
+                        <div class="flex flex-col gap-4">
+                            <div class="relative border border-brand-border bg-brand-darkgray overflow-hidden cursor-zoom-in" onclick="openLightbox('${product.images[0]}')">
+                                <img id="main-product-img" src="${product.images[0]}" alt="${product.name}" class="w-full h-[500px] sm:h-[600px] object-cover">
+                                <span class="absolute bottom-4 right-4 bg-brand-black/80 backdrop-blur-md text-brand-white text-xs px-3 py-1.5 border border-brand-border uppercase tracking-wider flex items-center gap-1.5">
+                                    <i data-lucide="zoom-in" class="w-4 h-4"></i> Click to zoom
+                                </span>
+                            </div>
+                            ${product.images.length > 1 ? `
+                                <div class="flex gap-4 overflow-x-auto pb-2">
+                                    ${product.images.map((img) => `
+                                        <img src="${img}" alt="Thumbnail" onclick="document.getElementById('main-product-img').src='${img}'" class="w-20 h-24 object-cover border border-brand-border cursor-pointer hover:opacity-100 opacity-70 transition-opacity">
+                                    `).join('')}
+                                </div>
+                            ` : ''}
+                        </div>
+
+                        <!-- Product Info -->
+                        <div class="flex flex-col gap-6">
+                            <div>
+                                <span class="text-xs uppercase tracking-[0.2em] text-brand-gray">${product.category}</span>
+                                <h1 class="text-2xl sm:text-4xl font-bold tracking-wide uppercase mt-1">${product.name}</h1>
+                                <div class="text-2xl sm:text-3xl font-bold text-brand-white mt-4">৳${product.price}</div>
+                            </div>
+
+                            <p class="text-brand-gray text-base leading-relaxed">${product.description}</p>
+
+                            <!-- Quality & Fabric -->
+                            <div class="border-y border-brand-border py-4 flex flex-col gap-2">
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-brand-gray">Fabric Quality</span>
+                                    <span class="font-medium text-brand-white">${product.fabric}</span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-brand-gray">Fabric Density</span>
+                                    <span class="font-medium text-brand-white">${product.gsm}</span>
+                                </div>
+                            </div>
+
+                            <!-- Features List -->
+                            <ul class="flex flex-col gap-2">
+                                ${product.features.map(f => `
+                                    <li class="flex items-center gap-2 text-sm text-brand-gray">
+                                        <i data-lucide="check" class="w-4 h-4 text-brand-white"></i> ${f}
+                                    </li>
+                                `).join('')}
+                            </ul>
+
+                            <!-- Size Selection -->
+                            <div class="flex flex-col gap-3 mt-2">
+                                <div class="flex justify-between items-center">
+                                    <label class="text-xs font-semibold uppercase tracking-wider text-brand-white">Select Size</label>
+                                    <button onclick="toggleSizeChartModal()" class="text-xs text-brand-gray underline hover:text-brand-white uppercase tracking-wider">View Size Chart</button>
+                                </div>
+                                <div id="size-selector" class="flex gap-4">
+                                    ${product.sizes.map((s, idx) => `
+                                        <button onclick="selectProductSize('${s}')" class="size-btn flex-1 py-3 border border-brand-border text-sm font-semibold uppercase tracking-wider transition-all ${idx === 0 ? 'border-brand-white bg-brand-white text-brand-black' : 'hover:border-brand-white text-brand-white'}" data-size="${s}">
+                                            ${s}
+                                        </button>
+                                    `).join('')}
+                                </div>
+                            </div>
+
+                            <!-- Quantity Selector -->
+                            <div class="flex items-center gap-4 mt-2">
+                                <span class="text-xs font-semibold uppercase tracking-wider text-brand-white">Quantity</span>
+                                <div class="flex items-center border border-brand-border">
+                                    <button onclick="adjustDetailQty(-1)" class="px-4 py-2 text-brand-gray hover:text-brand-white">-</button>
+                                    <span id="detail-qty" class="px-4 py-2 text-sm font-semibold">1</span>
+                                    <button onclick="adjustDetailQty(1)" class="px-4 py-2 text-brand-gray hover:text-brand-white">+</button>
+                                </div>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4">
+                                <button onclick="addToCartFromDetail('${product.id}')" class="bg-transparent border border-brand-white text-brand-white py-4 font-semibold uppercase tracking-wider hover:bg-brand-white hover:text-brand-black transition-colors text-xs flex items-center justify-center gap-2">
+                                    <i data-lucide="shopping-bag" class="w-4 h-4"></i> Add to Cart
+                                </button>
+                                <button onclick="toggleWishlist('${product.id}')" id="detail-wishlist-btn" class="border border-brand-border text-brand-white py-4 font-semibold uppercase tracking-wider hover:border-brand-white transition-colors text-xs flex items-center justify-center gap-2">
+                                    <i data-lucide="heart" class="w-4 h-4"></i> Wishlist
+                                </button>
+                                <button onclick="orderNow('${product.id}')" class="bg-brand-white text-brand-black py-4 font-semibold uppercase tracking-wider hover:bg-brand-gray transition-colors text-xs flex items-center justify-center gap-2">
+                                    Order Now
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Size Chart Section Displayed on Page -->
+                    <div class="mt-24 border-t border-brand-border pt-16" id="size-chart-section">
+                        <h3 class="text-xl font-bold tracking-wider uppercase mb-6 text-center">Size Guide (${product.category})</h3>
+                        <div class="max-w-xl mx-auto overflow-x-auto border border-brand-border">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="border-b border-brand-border bg-brand-darkgray">
+                                        ${sizeChart.headers.map(h => `<th class="p-4 text-xs font-bold uppercase tracking-wider text-brand-white text-center">${h}</th>`).join('')}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${sizeChart.rows.map(row => `
+                                        <tr class="border-b border-brand-border/50 text-sm">
+                                            ${row.map((cell, idx) => `<td class="p-4 text-brand-gray text-center ${idx === 0 ? 'text-brand-white font-medium' : ''}">${cell}</td>`).join('')}
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Related Products -->
+                    <div class="mt-24 border-t border-brand-border pt-16">
+                        <h3 class="text-2xl font-bold tracking-wider uppercase mb-8">You May Also Like</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-8">
+                            ${related.map(p => renderProductCard(p)).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+            updateWishlistButtonState(product.id);
+        }
+
+        function selectProductSize(size) {
+            selectedDetailSize = size;
+            document.querySelectorAll('.size-btn').forEach(btn => {
+                if (btn.getAttribute('data-size') === size) {
+                    btn.className = 'size-btn flex-1 py-3 border border-brand-white bg-brand-white text-brand-black text-sm font-semibold uppercase tracking-wider transition-all';
+                } else {
+                    btn.className = 'size-btn flex-1 py-3 border border-brand-border text-brand-white text-sm font-semibold uppercase tracking-wider hover:border-brand-white transition-all';
+                }
+            });
+        }
+
+        function adjustDetailQty(amount) {
+            detailQuantity = Math.max(1, detailQuantity + amount);
+            document.getElementById('detail-qty').innerText = detailQuantity;
+        }
+
+        function orderNow(productId) {
+            addToCartFromDetail(productId);
+            const drawer = document.getElementById('cart-drawer');
+            if (drawer) drawer.classList.add('hidden');
+            router('checkout');
+        }
+
+        // 5. COMBO DETAIL VIEW
+        function renderComboDetail(container, comboId) {
+            const combo = combos.find(c => c.id === comboId) || combos[0];
+            const p1 = products.find(p => p.id === combo.productId1) || products[0];
+            const p2 = products.find(p => p.id === combo.productId2) || products[1];
+
+            selectedComboSize1 = p1.sizes[0];
+            selectedComboSize2 = p2.sizes[0];
+
+            container.innerHTML = `
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                    <div class="flex items-center gap-2 text-xs text-brand-gray uppercase tracking-widest mb-8">
+                        <span class="cursor-pointer hover:text-brand-white" onclick="router('home')">Home</span>
+                        <span>/</span>
+                        <span class="cursor-pointer hover:text-brand-white" onclick="router('combos')">Combo Offers</span>
+                        <span>/</span>
+                        <span class="text-brand-white">${combo.name}</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+                        <div class="border border-brand-border bg-brand-darkgray overflow-hidden">
+                            <img src="${combo.image}" alt="${combo.name}" class="w-full h-[500px] object-cover">
+                        </div>
+                        <div class="flex flex-col gap-6">
+                            <div>
+                                <span class="text-xs uppercase tracking-[0.2em] text-brand-gray">Exclusive Bundle</span>
+                                <h1 class="text-3xl sm:text-4xl font-bold tracking-wide uppercase mt-1">${combo.name}</h1>
+                                <div class="flex items-baseline gap-4 mt-4">
+                                    <span class="text-3xl font-bold text-brand-white">৳${combo.price}</span>
+                                    <span class="text-lg text-brand-gray line-through">৳${combo.originalPrice}</span>
+                                    <span class="text-xs bg-brand-white text-brand-black px-2.5 py-1 font-bold uppercase tracking-wider">Save ৳${combo.savings}</span>
+                                </div>
+                            </div>
+
+                            <p class="text-brand-gray text-base leading-relaxed">${combo.description}</p>
+
+                            <!-- Item 1 Size Selection -->
+                            <div class="border-t border-brand-border pt-6 flex flex-col gap-3">
+                                <label class="text-xs font-semibold uppercase tracking-wider text-brand-white">1. Select Size for ${p1.name} (${p1.category})</label>
+                                <div class="flex gap-4" id="combo-size-1">
+                                    ${p1.sizes.map((s, idx) => `
+                                        <button onclick="selectComboSize(1, '${s}')" class="combo-size-1-btn flex-1 py-3 border border-brand-border text-sm font-semibold uppercase tracking-wider transition-all ${idx === 0 ? 'border-brand-white bg-brand-white text-brand-black' : 'text-brand-white hover:border-brand-white'}" data-size="${s}">${s}</button>
+                                    `).join('')}
+                                </div>
+                            </div>
+
+                            <!-- Item 2 Size Selection -->
+                            <div class="flex flex-col gap-3">
+                                <label class="text-xs font-semibold uppercase tracking-wider text-brand-white">2. Select Size for ${p2.name} (${p2.category})</label>
+                                <div class="flex gap-4" id="combo-size-2">
+                                    ${p2.sizes.map((s, idx) => `
+                                        <button onclick="selectComboSize(2, '${s}')" class="combo-size-2-btn flex-1 py-3 border border-brand-border text-sm font-semibold uppercase tracking-wider transition-all ${idx === 0 ? 'border-brand-white bg-brand-white text-brand-black' : 'text-brand-white hover:border-brand-white'}" data-size="${s}">${s}</button>
+                                    `).join('')}
+                                </div>
+                            </div>
+
+                            <button onclick="addComboToCart('${combo.id}')" class="w-full bg-brand-white text-brand-black py-4 font-semibold uppercase tracking-wider hover:bg-brand-gray transition-colors text-sm mt-4">
+                                Add Combo to Bag (৳${combo.price})
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function selectComboSize(itemNum, size) {
+            if (itemNum === 1) {
+                selectedComboSize1 = size;
+                document.querySelectorAll('.combo-size-1-btn').forEach(btn => {
+                    if (btn.getAttribute('data-size') === size) {
+                        btn.className = 'combo-size-1-btn flex-1 py-3 border border-brand-white bg-brand-white text-brand-black text-sm font-semibold uppercase tracking-wider transition-all';
+                    } else {
+                        btn.className = 'combo-size-1-btn flex-1 py-3 border border-brand-border text-brand-white text-sm font-semibold uppercase tracking-wider hover:border-brand-white transition-all';
+                    }
+                });
+            } else {
+                selectedComboSize2 = size;
+                document.querySelectorAll('.combo-size-2-btn').forEach(btn => {
+                    if (btn.getAttribute('data-size') === size) {
+                        btn.className = 'combo-size-2-btn flex-1 py-3 border border-brand-white bg-brand-white text-brand-black text-sm font-semibold uppercase tracking-wider transition-all';
+                    } else {
+                        btn.className = 'combo-size-2-btn flex-1 py-3 border border-brand-border text-brand-white text-sm font-semibold uppercase tracking-wider hover:border-brand-white transition-all';
+                    }
+                });
+            }
+        }
+
+        function addComboToCart(comboId) {
+            const combo = combos.find(c => c.id === comboId);
+            const cartItem = {
+                cartId: `${combo.id}-${selectedComboSize1}-${selectedComboSize2}-${Date.now()}`,
+                id: combo.id,
+                name: `${combo.name} (${selectedComboSize1} + ${selectedComboSize2})`,
+                price: combo.price,
+                image: combo.image,
+                size: `${selectedComboSize1} & ${selectedComboSize2}`,
+                quantity: 1,
+                isCombo: true
+            };
+            cart.push(cartItem);
+            saveState();
+            showToast(`Added ${combo.name} to bag!`);
+            toggleCartDrawer();
+        }
+
+        // 6. WISHLIST VIEW
+        function renderWishlist(container) {
+            const wishlistedProducts = products.filter(p => wishlist.includes(p.id));
+
+            container.innerHTML = `
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                    <div class="flex items-center gap-2 text-xs text-brand-gray uppercase tracking-widest mb-8">
+                        <span class="cursor-pointer hover:text-brand-white" onclick="router('home')">Home</span>
+                        <span>/</span>
+                        <span class="text-brand-white">Wishlist</span>
+                    </div>
+
+                    <div class="mb-12">
+                        <h2 class="text-3xl sm:text-5xl font-bold tracking-wider uppercase">My Wishlist</h2>
+                        <p class="text-brand-gray text-sm mt-2">Your saved favorite styles waiting for you.</p>
+                    </div>
+
+                    ${wishlistedProducts.length > 0 ? `
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                            ${wishlistedProducts.map(p => renderProductCard(p)).join('')}
+                        </div>
+                    ` : `
+                        <div class="py-24 text-center flex flex-col items-center gap-6 border border-brand-border bg-brand-darkgray">
+                            <i data-lucide="heart" class="w-12 h-12 text-brand-gray"></i>
+                            <h3 class="text-xl font-bold uppercase tracking-wide">Your wishlist is waiting for your favourite styles.</h3>
+                            <button onclick="router('explore')" class="bg-brand-white text-brand-black px-8 py-4 text-xs font-semibold uppercase tracking-wider hover:bg-brand-gray transition-colors">
+                                Explore Collection
+                            </button>
+                        </div>
+                    `}
+                </div>
+            `;
+        }
+
+        // 7. CHECKOUT VIEW
+        function renderCheckout(container) {
+            if (cart.length === 0) {
+                router('explore');
+                return;
+            }
+
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const deliveryCharge = 100;
+            const total = subtotal + deliveryCharge;
+
+            container.innerHTML = `
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                    <div class="flex items-center gap-2 text-xs text-brand-gray uppercase tracking-widest mb-8">
+                        <span class="cursor-pointer hover:text-brand-white" onclick="router('home')">Home</span>
+                        <span>/</span>
+                        <span class="text-brand-white">Checkout</span>
+                    </div>
+
+                    <h2 class="text-3xl sm:text-4xl font-bold tracking-wider uppercase mb-12">Secure Checkout</h2>
+
+                    <form id="checkout-form" onsubmit="handleCheckoutSubmit(event)" class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                        <!-- Customer Details & Payment -->
+                        <div class="lg:col-span-7 flex flex-col gap-8">
+                            <div class="bg-brand-darkgray border border-brand-border p-6 sm:p-8 flex flex-col gap-6">
+                                <h3 class="text-lg font-bold tracking-wider uppercase border-b border-brand-border pb-4">1. Delivery Information</h3>
+                                
+                                <div class="flex flex-col gap-2">
+                                    <label class="text-xs uppercase tracking-wider text-brand-gray">Full Name *</label>
+                                    <input type="text" id="cust-name" required placeholder="Enter your full name" class="bg-brand-black border border-brand-border p-4 text-brand-white text-sm outline-none focus:border-brand-white transition-colors">
+                                </div>
+
+                                <div class="flex flex-col gap-2">
+                                    <label class="text-xs uppercase tracking-wider text-brand-gray">Mobile Phone Number *</label>
+                                    <input type="tel" id="cust-phone" required placeholder="e.g. 017xxxxxxxx" class="bg-brand-black border border-brand-border p-4 text-brand-white text-sm outline-none focus:border-brand-white transition-colors">
+                                </div>
+
+                                <div class="flex flex-col gap-2">
+                                    <label class="text-xs uppercase tracking-wider text-brand-gray">Complete Delivery Address *</label>
+                                    <textarea id="cust-address" required rows="3" placeholder="House/Road, Area, Landmark" class="bg-brand-black border border-brand-border p-4 text-brand-white text-sm outline-none focus:border-brand-white transition-colors resize-none"></textarea>
+                                </div>
+
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div class="flex flex-col gap-2">
+                                        <label class="text-xs uppercase tracking-wider text-brand-gray">City / District *</label>
+                                        <input type="text" id="cust-city" required placeholder="e.g. Dhaka" class="bg-brand-black border border-brand-border p-4 text-brand-white text-sm outline-none focus:border-brand-white transition-colors">
+                                    </div>
+                                    <div class="flex flex-col gap-2">
+                                        <label class="text-xs uppercase tracking-wider text-brand-gray">Delivery Instructions (Optional)</label>
+                                        <input type="text" id="cust-note" placeholder="Any specific instructions" class="bg-brand-black border border-brand-border p-4 text-brand-white text-sm outline-none focus:border-brand-white transition-colors">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Payment Section -->
+                            <div class="bg-brand-darkgray border border-brand-border p-6 sm:p-8 flex flex-col gap-6">
+                                <h3 class="text-lg font-bold tracking-wider uppercase border-b border-brand-border pb-4">2. Payment Method</h3>
+                                <p class="text-brand-gray text-sm">Please send advance payment via bKash or Nagad to our official merchant number, then enter your Transaction ID below. For Cash on Delivery, advance delivery charge is required.</p>
+                                
+                                <div class="bg-brand-black border border-brand-border p-4 flex items-center justify-between">
+                                    <div>
+                                        <span class="text-xs uppercase text-brand-gray block">Official Payment Number (bKash / Nagad)</span>
+                                        <span class="text-lg font-bold text-brand-white tracking-widest">01611028150</span>
+                                    </div>
+                                    <span class="text-xs bg-brand-white text-brand-black font-bold uppercase px-3 py-1">Merchant / Personal</span>
+                                </div>
+
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div class="flex flex-col gap-2">
+                                        <label class="text-xs uppercase tracking-wider text-brand-gray">Select Payment Method *</label>
+                                        <select id="pay-method" onchange="handlePaymentMethodChange(this.value)" class="bg-brand-black border border-brand-border p-4 text-brand-white text-sm outline-none focus:border-brand-white transition-colors">
+                                            <option value="bKash">bKash (Advance Required)</option>
+                                            <option value="Nagad">Nagad (Advance Required)</option>
+                                            <option value="Cash on Delivery (Advance delivery charge required)">Cash on Delivery (Advance delivery charge required)</option>
+                                        </select>
+                                    </div>
+                                    <div class="flex flex-col gap-2" id="trxid-wrapper">
+                                        <label class="text-xs uppercase tracking-wider text-brand-gray" id="trxid-label">Transaction ID (TrxID) *</label>
+                                        <input type="text" id="pay-trxid" required placeholder="e.g. 9N87AH62" class="bg-brand-black border border-brand-border p-4 text-brand-white text-sm outline-none focus:border-brand-white transition-colors uppercase">
+                                    </div>
+                                </div>
+
+                                <div class="flex flex-col gap-2">
+                                    <label class="text-xs uppercase tracking-wider text-brand-gray">Sender Mobile Number (Optional)</label>
+                                    <input type="tel" id="pay-sender" placeholder="Number from which you sent payment" class="bg-brand-black border border-brand-border p-4 text-brand-white text-sm outline-none focus:border-brand-white transition-colors">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Order Summary -->
+                        <div class="lg:col-span-5 flex flex-col gap-6">
+                            <div class="bg-brand-darkgray border border-brand-border p-6 sm:p-8 flex flex-col gap-6 sticky top-28">
+                                <h3 class="text-lg font-bold tracking-wider uppercase border-b border-brand-border pb-4">Order Summary</h3>
+                                
+                                <div class="flex flex-col gap-4 max-h-80 overflow-y-auto pr-2">
+                                    ${cart.map(item => `
+                                        <div class="flex items-center justify-between gap-4 border-b border-brand-border/50 pb-4">
+                                            <div class="flex items-center gap-3">
+                                                <img src="${item.image}" alt="${item.name}" class="w-14 h-16 object-cover border border-brand-border">
+                                                <div>
+                                                    <h4 class="text-sm font-bold text-brand-white">${item.name}</h4>
+                                                    <p class="text-xs text-brand-gray">Size: ${item.size} \vert{} Qty:${item.quantity}</p>
+                                                </div>
+                                            </div>
+                                            <span class="text-sm font-semibold">৳${item.price * item.quantity}</span>
+                                        </div>
+                                    `).join('')}
+                                </div>
+
+                                <div class="flex flex-col gap-3 pt-4 border-t border-brand-border">
+                                    <div class="flex justify-between text-sm text-brand-gray">
+                                        <span>Subtotal</span>
+                                        <span class="text-brand-white">৳${subtotal}</span>
+                                    </div>
+                                    <div class="flex justify-between text-sm text-brand-gray">
+                                        <span>Delivery Charge</span>
+                                        <span class="text-brand-white">৳${deliveryCharge}</span>
+                                    </div>
+                                    <div class="flex justify-between text-base font-bold pt-3 border-t border-brand-border text-brand-white">
+                                        <span>Total Payable</span>
+                                        <span>৳${total}</span>
+                                    </div>
+                                </div>
+
+                                <button type="submit" id="submit-order-btn" class="w-full bg-brand-white text-brand-black py-4 font-semibold uppercase tracking-wider hover:bg-brand-gray transition-colors text-center text-sm flex items-center justify-center gap-2">
+                                    <i data-lucide="message-circle" class="w-5 h-5"></i> Confirm Order via WhatsApp
+                                </button>
+                                <p class="text-brand-gray text-xs text-center leading-relaxed">
+                                    Clicking this button will open WhatsApp with your complete order summary and transaction details addressed to VELOREIGN (01611028150).
+                                </p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            `;
+        }
+
+        function handlePaymentMethodChange(val) {
+            const trxIdInput = document.getElementById('pay-trxid');
+            const trxIdLabel = document.getElementById('trxid-label');
+            if (val.includes('Cash on Delivery')) {
+                trxIdInput.required = false;
+                trxIdLabel.innerText = 'Transaction ID (Optional for COD)';
+                trxIdInput.placeholder = 'e.g. TrxID if paid in advance';
+            } else {
+                trxIdInput.required = true;
+                trxIdLabel.innerText = 'Transaction ID (TrxID) *';
+                trxIdInput.placeholder = 'e.g. 9N87AH62';
+            }
+        }
+
+        function handleCheckoutSubmit(e) {
+            e.preventDefault();
+            if (isSubmittingOrder) return;
+            if (cart.length === 0) {
+                showToast('Your cart is empty');
+                return;
+            }
+
+            isSubmittingOrder = true;
+            const submitBtn = document.getElementById('submit-order-btn');
+            if (submitBtn) {
+                submitBtn.innerText = 'Preparing WhatsApp Order...';
+                submitBtn.disabled = true;
+            }
+
+            const name = document.getElementById('cust-name').value;
+            const phone = document.getElementById('cust-phone').value;
+            const address = document.getElementById('cust-address').value;
+            const city = document.getElementById('cust-city').value;
+            const note = document.getElementById('cust-note').value || 'None';
+            const method = document.getElementById('pay-method').value;
+            const trxid = document.getElementById('pay-trxid').value || 'Not provided';
+            const sender = document.getElementById('pay-sender').value || 'Not provided';
+
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const deliveryCharge = 100;
+            const total = subtotal + deliveryCharge;
+
+            let productsText = cart.map(item => `• ${item.name} — Size: ${item.size} — Qty: ${item.quantity} — ৳${item.price * item.quantity}`).join('\n');
+
+            const message = `NEW VELOREIGN ORDER
+Customer Name: ${name}
+Phone: ${phone}
+Address: ${address}
+City/District: ${city}
+Delivery Notes: ${note}
+
+ORDER DETAILS:
+${productsText}
+
+Subtotal: ৳${subtotal}
+Delivery Charge: ৳${deliveryCharge}
+TOTAL: ৳${total}
+
+Payment Method: ${method}
+Transaction ID: ${trxid}
+Sender Number: ${sender}
+
+Please confirm this order.`;
+
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = `https://wa.me/8801611028150?text=${encodedMessage}`;
+
+            try {
+                const win = window.open(whatsappUrl, '_blank');
+                if (!win) {
+                    showToast('Popup blocked! Please allow popups or use the manual link below.');
+                }
+            } catch (err) {
+                console.error('WhatsApp popup error:', err);
+            }
+
+            const app = document.getElementById('app');
+            app.innerHTML = `
+                <div class="max-w-2xl mx-auto px-4 py-24 text-center flex flex-col items-center gap-6 border border-brand-border bg-brand-darkgray my-12">
+                    <div class="p-4 bg-brand-white text-brand-black rounded-full">
+                        <i data-lucide="check" class="w-8 h-8"></i>
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-bold uppercase tracking-wider">WhatsApp Order Ready!</h2>
+                    <p class="text-brand-gray text-sm leading-relaxed max-w-lg">
+                        Your WhatsApp has opened with the prefilled order summary. Please ensure you tap <strong>Send</strong> in WhatsApp to transmit your order to VELOREIGN (01611028150).
+                    </p>
+                    <p class="text-xs text-brand-gray">
+                        ⚠️ Note: Opening WhatsApp does <strong>not</strong> automatically verify payment or confirm your order. Your order is only processed once our team manually verifies your Transaction ID (${trxid}) over WhatsApp.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 mt-4">
+                        <a href="${whatsappUrl}" target="_blank" class="bg-transparent border border-brand-white text-brand-white px-6 py-3 text-xs font-semibold uppercase tracking-wider hover:bg-brand-white hover:text-brand-black transition-colors flex items-center justify-center gap-2">
+                            <i data-lucide="message-circle" class="w-4 h-4"></i> Open WhatsApp Again
+                        </a>
+                        <button onclick="cart=[]; saveState(); isSubmittingOrder=false; router('home');" class="bg-brand-white text-brand-black px-8 py-3 text-xs font-semibold uppercase tracking-wider hover:bg-brand-gray transition-colors">
+                            Return to Homepage
+                        </button>
+                    </div>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+
+        // 8. STATIC INFO PAGES
+        function renderContact(container) {
+            container.innerHTML = `
+                <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                    <div class="flex items-center gap-2 text-xs text-brand-gray uppercase tracking-widest mb-8">
+                        <span class="cursor-pointer hover:text-brand-white" onclick="router('home')">Home</span>
+                        <span>/</span>
+                        <span class="text-brand-white">Contact Us</span>
+                    </div>
+
+                    <h2 class="text-3xl sm:text-5xl font-bold tracking-wider uppercase mb-8">Contact VELOREIGN</h2>
+                    
+                    <div class="border border-brand-border bg-brand-darkgray p-8 flex flex-col gap-8">
+                        <div class="flex flex-col gap-2">
+                            <span class="text-xs uppercase tracking-widest text-brand-gray">Brand Name</span>
+                            <span class="text-xl font-bold text-brand-white">VELOREIGN</span>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <span class="text-xs uppercase tracking-widest text-brand-gray">Official WhatsApp Support</span>
+                            <span class="text-xl font-bold text-brand-white">01611028150</span>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <span class="text-xs uppercase tracking-widest text-brand-gray">Social Media Handles</span>
+                            <div class="flex items-center gap-4 mt-1">
+                                <a href="https://www.facebook.com/profile.php?id=61575914436963" target="_blank" rel="noopener noreferrer" class="text-sm font-semibold text-brand-white underline flex items-center gap-2">
+                                    <i data-lucide="facebook" class="w-4 h-4"></i> Facebook Page
+                                </a>
+                                <a href="https://www.instagram.com/veloreign_fashion_._/?hl=en" target="_blank" rel="noopener noreferrer" class="text-sm font-semibold text-brand-white underline flex items-center gap-2">
+                                    <i data-lucide="instagram" class="w-4 h-4"></i> Instagram Account
+                                </a>
+                            </div>
+                        </div>
+                        <div class="pt-4 border-t border-brand-border">
+                            <a href="https://wa.me/8801611028150" target="_blank" class="inline-flex items-center gap-3 bg-brand-white text-brand-black px-8 py-4 font-semibold uppercase tracking-wider hover:bg-brand-gray transition-colors text-sm">
+                                <i data-lucide="message-circle" class="w-5 h-5"></i> Chat on WhatsApp
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderFaq(container) {
+            const faqs = [
+                { q: 'How do I place an order?', a: 'Browse our collection, select your size, add items to your cart, and proceed to checkout. Fill in your delivery details and Transaction ID, then click "Confirm Order via WhatsApp" to send your order directly to our team.' },
+                { q: 'How do I choose the correct size?', a: 'We provide detailed size charts with chest, length, and sleeve measurements (in inches) on every product details page to ensure an immaculate fit.' },
+                { q: 'How can I pay?', a: 'We accept advance payments via bKash and Nagad sent to our merchant number 01611028150. Cash on Delivery is also available with advance delivery charge confirmation.' },
+                { q: 'Why is my transaction ID required?', a: 'Your transaction ID (TrxID) allows our team to verify your advance payment securely and confirm your order instantly upon verification.' },
+                { q: 'How long does delivery take?', a: 'Standard delivery takes 2-3 days inside Dhaka and 3-5 days outside Dhaka.' },
+                { q: 'Can I exchange a product?', a: 'Yes, exchanges are accepted within 7 days of delivery for unworn items with original tags. Contact our WhatsApp support at 01611028150.' },
+                { q: 'How can I contact VELOREIGN?', a: 'You can reach us directly anytime via WhatsApp at 01611028150 or through our official Facebook & Instagram pages.' }
+            ];
+
+            container.innerHTML = `
+                <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                    <div class="flex items-center gap-2 text-xs text-brand-gray uppercase tracking-widest mb-8">
+                        <span class="cursor-pointer hover:text-brand-white" onclick="router('home')">Home</span>
+                        <span>/</span>
+                        <span class="text-brand-white">FAQ</span>
+                    </div>
+
+                    <h2 class="text-3xl sm:text-5xl font-bold tracking-wider uppercase mb-12">Frequently Asked Questions</h2>
+
+                    <div class="flex flex-col gap-6">
+                        ${faqs.map((faq, idx) => `
+                            <div class="border border-brand-border bg-brand-darkgray p-6 sm:p-8 flex flex-col gap-3">
+                                <h3 class="text-lg font-bold text-brand-white flex items-center gap-3">
+                                    <span class="text-xs text-brand-gray">0${idx+1}</span>${faq.q}
+                                </h3>
+                                <p class="text-brand-gray text-sm leading-relaxed pl-7">${faq.a}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderPolicy(container, title, content) {
+            container.innerHTML = `
+                <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                    <div class="flex items-center gap-2 text-xs text-brand-gray uppercase tracking-widest mb-8">
+                        <span class="cursor-pointer hover:text-brand-white" onclick="router('home')">Home</span>
+                        <span>/</span>
+                        <span class="text-brand-white">${title}</span>
+                    </div>
+
+                    <h2 class="text-3xl sm:text-5xl font-bold tracking-wider uppercase mb-8">${title}</h2>
+
+                    <div class="border border-brand-border bg-brand-darkgray p-8">
+                        <p class="text-brand-gray text-base leading-relaxed">${content}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- HELPER COMPONENTS ---
+        function renderProductCard(product) {
+            const isWishlisted = wishlist.includes(product.id);
+            return `
+                <div class="border border-brand-border bg-brand-darkgray flex flex-col justify-between group">
+                    <div class="relative overflow-hidden cursor-pointer" onclick="router('product', '${product.id}')">
+                        <img src="${product.images[0]}" alt="${product.name}" class="w-full h-80 sm:h-96 object-cover group-hover:scale-105 transition-transform duration-500">
+                        <button onclick="event.stopPropagation(); toggleWishlist('${product.id}')" class="absolute top-4 right-4 p-2.5 bg-brand-black/80 backdrop-blur-md border border-brand-border text-brand-white hover:text-brand-gray transition-colors" aria-label="Wishlist">
+                            <i data-lucide="heart" class="w-4 h-4 ${isWishlisted ? 'fill-white text-white' : ''}"></i>
+                        </button>
+                    </div>
+                    <div class="p-6 flex flex-col gap-4">
+                        <div class="flex flex-col gap-1">
+                            <span class="text-xs uppercase tracking-wider text-brand-gray">${product.category}</span>
+                            <h3 class="text-base font-bold tracking-wide uppercase cursor-pointer hover:text-brand-gray transition-colors line-clamp-1" onclick="router('product', '${product.id}')">${product.name}</h3>
+                        </div>
+                        <div class="flex items-center justify-between pt-2 border-t border-brand-border">
+                            <span class="text-lg font-bold text-brand-white">৳${product.price}</span>
+                            <span class="text-xs text-brand-gray uppercase tracking-wider">Sizes: M, L, XL</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2 mt-2">
+                            <button onclick="router('product', '${product.id}')" class="bg-transparent border border-brand-white text-brand-white py-3 text-xs font-semibold uppercase tracking-wider hover:bg-brand-white hover:text-brand-black transition-colors text-center">
+                                View Details
+                            </button>
+                            <button onclick="quickAddToCart('${product.id}')" class="bg-brand-white text-brand-black py-3 text-xs font-semibold uppercase tracking-wider hover:bg-brand-gray transition-colors text-center">
+                                Add to Bag
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- CART & WISHLIST ACTIONS ---
+        function quickAddToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            const defaultSize = product.sizes && product.sizes.length > 0 ? product.sizes[0] : 'M';
+            const cartItem = {
+                cartId: `${product.id}-${defaultSize}-${Date.now()}`,
+                id: product.id,
+                name: product.name,
+                price: product.price,
+                image: product.images[0],
+                size: defaultSize,
+                quantity: 1,
+                isCombo: false
+            };
+            cart.push(cartItem);
+            saveState();
+            showToast(`Added ${product.name} (Size ${defaultSize}) to bag!`);
+            toggleCartDrawer();
+        }
+
+        function addToCartFromDetail(productId) {
+            const product = products.find(p => p.id === productId);
+            const cartItem = {
+                cartId: `${product.id}-${selectedDetailSize}-${Date.now()}`,
+                id: product.id,
+                name: product.name,
+                price: product.price,
+                image: product.images[0],
+                size: selectedDetailSize,
+                quantity: detailQuantity,
+                isCombo: false
+            };
+            cart.push(cartItem);
+            saveState();
+            showToast(`Added ${product.name} (Size ${selectedDetailSize}) to bag!`);
+            toggleCartDrawer();
+        }
+
+        function removeFromCart(cartId) {
+            cart = cart.filter(item => item.cartId !== cartId);
+            saveState();
+            renderCartItems();
+            showToast('Item removed from bag');
+        }
+
+        function updateCartQty(cartId, delta) {
+            const item = cart.find(i => i.cartId === cartId);
+            if (item) {
+                item.quantity += delta;
+                if (item.quantity <= 0) {
+                    removeFromCart(cartId);
+                } else {
+                    saveState();
+                    renderCartItems();
+                }
+            }
+        }
+
+        function toggleWishlist(productId) {
+            const index = wishlist.indexOf(productId);
+            if (index > -1) {
+                wishlist.splice(index, 1);
+                showToast('Removed from wishlist');
+            } else {
+                wishlist.push(productId);
+                showToast('Added to wishlist');
+            }
+            saveState();
+            updateWishlistButtonState(productId);
+            if (currentRoute === 'wishlist') {
+                router('wishlist');
+            }
+        }
+
+        function updateWishlistButtonState(productId) {
+            const btn = document.getElementById('detail-wishlist-btn');
+            if (btn) {
+                const isWishlisted = wishlist.includes(productId);
+                if (isWishlisted) {
+                    btn.innerHTML = `<i data-lucide="heart" class="w-4 h-4 fill-white text-white"></i> Wishlisted`;
+                } else {
+                    btn.innerHTML = `<i data-lucide="heart" class="w-4 h-4"></i> Wishlist`;
+                }
+                lucide.createIcons();
+            }
+        }
+
+        // --- DRAWERS & MODALS ---
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            if (menu.classList.contains('-translate-x-full')) {
+                menu.classList.remove('-translate-x-full');
+            } else {
+                menu.classList.add('-translate-x-full');
+            }
+        }
+
+        function toggleCartDrawer() {
+            const drawer = document.getElementById('cart-drawer');
+            if (drawer.classList.contains('hidden')) {
+                drawer.classList.remove('hidden');
+                renderCartItems();
+            } else {
+                drawer.classList.add('hidden');
+            }
+        }
+
+        function proceedToCheckoutFromCart() {
+            if (cart.length === 0) {
+                showToast('Your bag is empty!');
+                return;
+            }
+            toggleCartDrawer();
+            router('checkout');
+        }
+
+        function renderCartItems() {
+            const container = document.getElementById('cart-items-container');
+            const subtotalEl = document.getElementById('cart-subtotal');
+            const deliveryEl = document.getElementById('cart-delivery');
+            const totalEl = document.getElementById('cart-total');
+
+            if (cart.length === 0) {
+                container.innerHTML = `<p class="text-brand-gray text-center py-12">Your shopping bag is empty.</p>`;
+                if (subtotalEl) subtotalEl.innerText = '৳0';
+                if (deliveryEl) deliveryEl.innerText = '৳0';
+                if (totalEl) totalEl.innerText = '৳0';
+                return;
+            }
+
+            container.innerHTML = cart.map(item => `
+                <div class="flex gap-4 border-b border-brand-border pb-4 items-center">
+                    <img src="${item.image}" alt="${item.name}" class="w-16 h-20 object-cover border border-brand-border cursor-pointer" onclick="openLightbox('${item.image}')">
+                    <div class="flex-1 flex flex-col gap-1">
+                        <h4 class="text-sm font-bold text-brand-white line-clamp-1">${item.name}</h4>
+                        <p class="text-xs text-brand-gray">Size: ${item.size}</p>
+                        <p class="text-sm font-semibold text-brand-white">৳${item.price}</p>
+                        <div class="flex items-center gap-3 mt-1">
+                            <div class="flex items-center border border-brand-border text-xs">
+                                <button onclick="updateCartQty('${item.cartId}', -1)" class="px-2 py-1 text-brand-gray hover:text-brand-white">-</button>
+                                <span class="px-2 py-1">${item.quantity}</span>
+                                <button onclick="updateCartQty('${item.cartId}', 1)" class="px-2 py-1 text-brand-gray hover:text-brand-white">+</button>
+                            </div>
+                            <button onclick="removeFromCart('${item.cartId}')" class="text-xs text-brand-gray hover:text-brand-white underline">Remove</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const deliveryCharge = 100;
+            const total = subtotal + deliveryCharge;
+
+            if (subtotalEl) subtotalEl.innerText = `৳${subtotal}`;
+            if (deliveryEl) deliveryEl.innerText = `৳${deliveryCharge}`;
+            if (totalEl) totalEl.innerText = `৳${total}`;
+            lucide.createIcons();
+        }
+
+        function toggleSearchModal() {
+            const modal = document.getElementById('search-modal');
+            if (modal.classList.contains('hidden')) {
+                modal.classList.remove('hidden');
+                document.getElementById('search-input').focus();
+            } else {
+                modal.classList.add('hidden');
+            }
+        }
+
+        function escapeHtml(str) {
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function handleSearch(query) {
+            const resultsContainer = document.getElementById('search-results');
+            if (!query.trim()) {
+                resultsContainer.innerHTML = '';
+                return;
+            }
+
+            const q = query.toLowerCase();
+            const matched = products.filter(p => p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q) || p.description.toLowerCase().includes(q));
+
+            if (matched.length === 0) {
+                resultsContainer.innerHTML = `<p class="text-brand-gray text-center py-8">No clothing products found matching "${escapeHtml(query)}".</p>`;
+                return;
+            }
+
+            resultsContainer.innerHTML = matched.map(p => `
+                <div onclick="toggleSearchModal(); router('product', '${p.id}');" class="flex items-center gap-4 p-3 border border-brand-border bg-brand-darkgray hover:border-brand-white cursor-pointer transition-colors">
+                    <img src="${escapeHtml(p.images[0])}" alt="${escapeHtml(p.name)}" class="w-12 h-14 object-cover">
+                    <div class="flex-1">
+                        <h4 class="text-sm font-bold text-brand-white">${escapeHtml(p.name)}</h4>
+                        <p class="text-xs text-brand-gray">${escapeHtml(p.category)} — ৳${p.price}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openLightbox(imgSrc) {
+            const lightbox = document.getElementById('lightbox');
+            const img = document.getElementById('lightbox-img');
+            img.src = imgSrc;
+            lightbox.classList.remove('hidden');
+            lightbox.classList.add('flex');
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.add('hidden');
+            lightbox.classList.remove('flex');
+        }
+
+        function toggleSizeChartModal() {
+            const chartSection = document.getElementById('size-chart-section');
+            if (chartSection) {
+                chartSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    </script>
+</body>
+</html>
